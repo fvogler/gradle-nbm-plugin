@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.jar.Manifest;
 
 public final class ManifestUtils {
+    
     public static Map<String, String> readManifest(Path path) throws IOException {
         try (InputStream fileInput = Files.newInputStream(path);
                 InputStream input = new BufferedInputStream(fileInput)) {
