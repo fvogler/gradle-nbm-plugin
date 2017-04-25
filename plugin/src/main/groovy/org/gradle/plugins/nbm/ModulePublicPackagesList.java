@@ -3,30 +3,31 @@ package org.gradle.plugins.nbm;
 import org.gradle.api.tasks.SourceSet;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.regex.Pattern;
 
-public final class NbmFriendPackages {
-    private final List<PackageNameGenerator> packageList;
+public final class ModulePublicPackagesList {
 
-    public NbmFriendPackages() {
-        this.packageList = new LinkedList<>();
+    private final List<PackageNameGenerator> packageNameGenerators;
+
+    public ModulePublicPackagesList() {
+        this.packageNameGenerators = new LinkedList<>();
     }
 
     private static void getPackagesInDir(String packageName, File currentDir, List<String> result) {
         boolean hasFile = false;
-        for (File file: currentDir.listFiles()) {
+        for (File file : currentDir.listFiles()) {
             if (file.isDirectory()) {
                 String lastPart = file.getName();
                 String subPackageName = packageName.isEmpty()
                         ? lastPart
                         : packageName + "." + lastPart;
                 getPackagesInDir(subPackageName, file, result);
-            }
-            else if (!hasFile && file.isFile()) {
+            } else if (!hasFile && file.isFile()) {
                 hasFile = true;
             }
         }
@@ -39,7 +40,7 @@ public final class NbmFriendPackages {
     private static void findAllPackages(File sourceRoot, String packageName, List<String> result) {
         String[] pathParts = packageName.split(Pattern.quote("."));
         File startDir = sourceRoot;
-        for (String part: pathParts) {
+        for (String part : pathParts) {
             startDir = new File(startDir, part);
         }
 
@@ -51,7 +52,7 @@ public final class NbmFriendPackages {
     }
 
     private static void findAllPackages(SourceSet sourceSet, String packageName, List<String> result) {
-        for (File sourceRoot: sourceSet.getAllJava().getSrcDirs()) {
+        for (File sourceRoot : sourceSet.getAllJava().getSrcDirs()) {
             findAllPackages(sourceRoot, packageName, result);
         }
     }
@@ -60,7 +61,7 @@ public final class NbmFriendPackages {
         Objects.requireNonNull(sourceSet, "sourceSet");
         Objects.requireNonNull(packageName, "packageName");
 
-        packageList.add(new PackageNameGenerator() {
+        packageNameGenerators.add(new PackageNameGenerator() {
             @Override
             public void findPackages(List<String> result) {
                 findAllPackages(sourceSet, packageName, result);
@@ -71,7 +72,7 @@ public final class NbmFriendPackages {
     public void add(final String packageName) {
         Objects.requireNonNull(packageName, "packageName");
 
-        packageList.add(new PackageNameGenerator() {
+        packageNameGenerators.add(new PackageNameGenerator() {
             @Override
             public void findPackages(List<String> result) {
                 result.add(packageName);
@@ -79,21 +80,21 @@ public final class NbmFriendPackages {
         });
     }
 
-    public List<String> getPackageList() {
+    private List<String> resolvePackageNames() {
         List<String> result = new LinkedList<>();
-        for (PackageNameGenerator currentNames: packageList) {
+        for (PackageNameGenerator currentNames : packageNameGenerators) {
             currentNames.findPackages(result);
         }
         return result;
     }
 
-    public List<String> getPackageListPattern() {
-        List<String> packages = getPackageList();
-        List<String> result = new ArrayList<>(packages.size());
-        for (String packageName: packages) {
-            result.add(toStarImport(packageName));
+    public SortedSet<String> getEntries() {
+        List<String> packageNames = resolvePackageNames();
+        SortedSet<String> entries = new TreeSet<>();
+        for (String packageName : packageNames) {
+            entries.add(toStarImport(packageName));
         }
-        return result;
+        return entries;
     }
 
     private static String toStarImport(String packageName) {
@@ -103,6 +104,7 @@ public final class NbmFriendPackages {
     }
 
     private interface PackageNameGenerator {
+
         public void findPackages(List<String> result);
     }
 }

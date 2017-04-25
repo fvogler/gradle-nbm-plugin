@@ -25,7 +25,8 @@ public final class NbmPluginExtension {
     private final List<String> requires;
     private String localizingBundle;
     private String moduleInstall;
-    private final NbmFriendPackages friendPackages;
+    private final ModulePublicPackagesList publicPackages;
+    private final ModuleFriendsList moduleFriends;
     private File licenseFile;
     private String moduleAuthor;
     private String homePage;
@@ -56,12 +57,13 @@ public final class NbmPluginExtension {
         this.needsRestart = null;
         this.eager = false;
         this.autoload = false;
-        this.friendPackages = new NbmFriendPackages();
+        this.publicPackages = new ModulePublicPackagesList();
+        this.moduleFriends = new ModuleFriendsList();
         this.keyStore = new NbmKeyStoreDef();
         this.requires = new LinkedList<>();
         this.classpathExtFolder = null;
         this.autoupdateShowInClient = true;
-        
+
         // Initializse default values
         this.buildDate = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date(System.currentTimeMillis()));
         requires("org.openide.modules.ModuleFormat1");
@@ -71,14 +73,24 @@ public final class NbmPluginExtension {
         return buildDate;
     }
 
-    public NbmFriendPackages getFriendPackages() {
-        return friendPackages;
+    public ModulePublicPackagesList getPublicPackages() {
+        return publicPackages;
     }
 
-    public void friendPackages(Closure<NbmFriendPackages> configBlock) {
+    public void publicPackages(Closure<ModulePublicPackagesList> configBlock) {
         configBlock.setResolveStrategy(Closure.DELEGATE_FIRST);
-        configBlock.setDelegate(friendPackages);
-        configBlock.call(friendPackages);
+        configBlock.setDelegate(publicPackages);
+        configBlock.call(publicPackages);
+    }
+
+    public ModuleFriendsList getModuleFriends() {
+        return moduleFriends;
+    }
+
+    public void moduleFriends(Closure<ModuleFriendsList> configBlock) {
+        configBlock.setResolveStrategy(Closure.DELEGATE_FIRST);
+        configBlock.setDelegate(moduleFriends);
+        configBlock.call(moduleFriends);
     }
 
     public Configuration getHarnessConfiguration() {
@@ -167,6 +179,8 @@ public final class NbmPluginExtension {
     }
 
     public void setModuleName(String moduleName) {
+        Objects.requireNonNull(moduleName, "moduleName");
+
         // pattern copied from http://netbeans.org/ns/nb-module-project/3.xsd (code-name-base)
         // and add optional major version to pattern
         String pattern = "[a-zA-Z][a-zA-Z0-9_]*(\\.[a-zA-Z][a-zA-Z0-9_]*)*(/\\d+)?";

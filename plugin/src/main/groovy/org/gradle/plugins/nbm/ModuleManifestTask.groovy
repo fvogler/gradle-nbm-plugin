@@ -7,12 +7,14 @@ import org.gradle.api.file.FileVisitDetails
 import org.gradle.api.internal.ConventionTask
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
+import org.gradle.api.InvalidUserDataException
 
 import java.nio.file.Files
 import java.text.SimpleDateFormat
 import java.util.jar.Attributes
 import java.util.jar.JarFile
 import java.util.jar.Manifest
+import java.util.SortedSet;
 
 class ModuleManifestTask extends ConventionTask {
     @OutputFile
@@ -148,14 +150,17 @@ class ModuleManifestTask extends ConventionTask {
         }
         result.put('OpenIDE-Module-Specification-Version', netbeansExt().specificationVersion)
 
-        def packageList = netbeansExt().friendPackages.packageListPattern
-        if (!packageList.isEmpty()) {
-            Set packageListSet = new HashSet(packageList)
-            def packages = packageListSet.toArray()
-            Arrays.sort(packages) // because why not
-            result.put('OpenIDE-Module-Public-Packages', packages.join(', '))
+        SortedSet<String> publicPackages = netbeansExt().publicPackages.entries
+        if (!publicPackages.isEmpty()) {
+            result.put('OpenIDE-Module-Public-Packages', publicPackages.join(', '))
         } else {
             result.put('OpenIDE-Module-Public-Packages', '-')
+        }
+        
+        SortedSet<String> moduleFriends = netbeansExt().moduleFriends.entries
+        if (!moduleFriends.isEmpty()) {
+            if(publicPackages.isEmpty()) throw new InvalidUserDataException("Module friends can't be specified without defined public packages") 
+            result.put('OpenIDE-Module-Friends', moduleFriends.join(', '))
         }
 
         def layer = netbeansExt().layer
