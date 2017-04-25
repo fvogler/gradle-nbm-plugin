@@ -42,10 +42,10 @@ class ManifestGenerationTest extends AbstractIntegrationTest {
         // so can't rely on the default value for that
         buildFile << \
 """
-apply plugin: org.gradle.plugins.nbm.NbmPlugin\n\
+apply plugin: org.gradle.plugins.nbm.NbmPlugin
 version = '3.5.6'
 nbm {
-  moduleName = 'my-test-project'
+  moduleName = 'com.foo.acme'
 }
 """
         when: "Generate netbeans module manifest"
@@ -74,10 +74,10 @@ nbm {
         // so can't rely on the default value for that
         buildFile << \
 """
-apply plugin: org.gradle.plugins.nbm.NbmPlugin\n\
+apply plugin: org.gradle.plugins.nbm.NbmPlugin
 version = '3.5.6'
 nbm {
-  moduleName = 'my-test-project'\n\
+  moduleName = 'com.foo.acme'
   layer = 'rootpckg/mypckg/subpckg/layer.xml'
 }
 """
@@ -98,10 +98,10 @@ nbm {
         // so can't rely on the default value for that
         buildFile << \
 """
-apply plugin: org.gradle.plugins.nbm.NbmPlugin\n\
+apply plugin: org.gradle.plugins.nbm.NbmPlugin
 version = '3.5.6'
 nbm {
-  moduleName = 'my-test-project'
+  moduleName = 'com.foo.acme'
   javaDependency = 'Java > 1.8'
 }
 """
@@ -122,10 +122,10 @@ nbm {
         // so can't rely on the default value for that
         buildFile << \
 """
-apply plugin: org.gradle.plugins.nbm.NbmPlugin\n\
+apply plugin: org.gradle.plugins.nbm.NbmPlugin
 version = '3.5.6'
 nbm {
-  moduleName = 'my-test-project'\n\
+  moduleName = 'com.foo.acme'
   autoupdateShowInClient = false
 }
 """
@@ -146,10 +146,10 @@ nbm {
         // so can't rely on the default value for that
         buildFile << \
 """
-apply plugin: org.gradle.plugins.nbm.NbmPlugin\n\
+apply plugin: org.gradle.plugins.nbm.NbmPlugin
 version = '3.5.6'
 nbm {
-  moduleName = 'my-test-project'
+  moduleName = 'com.foo.acme'
   implementationVersion = 'myImplVersion'
 }
 """
@@ -173,10 +173,10 @@ nbm {
         // so can't rely on the default value for that
         buildFile << \
 """
-apply plugin: org.gradle.plugins.nbm.NbmPlugin\n\
+apply plugin: org.gradle.plugins.nbm.NbmPlugin
 version = '3.5.6'
 nbm {
-  moduleName = 'my-test-project'
+  moduleName = 'com.foo.acme'
 }
 """
         when: "Generate netbeans module manifest"
@@ -200,7 +200,7 @@ nbm {
 apply plugin: org.gradle.plugins.nbm.NbmPlugin
 version = '3.5.6'
 nbm {
-  moduleName = 'my-test-project'
+  moduleName = 'com.foo.acme'
   implementationVersion = version
 
   friendPackages {
@@ -227,7 +227,7 @@ nbm {
 apply plugin: org.gradle.plugins.nbm.NbmPlugin
 version = '3.5.6'
 nbm {
-  moduleName = 'my-test-project'
+  moduleName = 'com.foo.acme'
   implementationVersion = version
 
   friendPackages {
@@ -254,7 +254,7 @@ nbm {
 apply plugin: org.gradle.plugins.nbm.NbmPlugin
 version = '3.5.6'
 nbm {
-  moduleName = 'my-test-project'
+  moduleName = 'com.foo.acme'
   implementationVersion = version
 
   friendPackages {
@@ -282,7 +282,7 @@ nbm {
 apply plugin: org.gradle.plugins.nbm.NbmPlugin
 version = '3.5.6'
 nbm {
-  moduleName = 'my-test-project'
+  moduleName = 'com.foo.acme'
   implementationVersion = version
 
   friendPackages {
@@ -310,7 +310,7 @@ nbm {
 apply plugin: org.gradle.plugins.nbm.NbmPlugin
 version = '3.5.6'
 nbm {
-  moduleName = 'my-test-project'
+  moduleName = 'com.foo.acme'
   implementationVersion = version
   
   friendPackages {
@@ -337,10 +337,10 @@ nbm {
         // so can't rely on the default value for that
         buildFile << \
 """
-apply plugin: org.gradle.plugins.nbm.NbmPlugin\n\
+apply plugin: org.gradle.plugins.nbm.NbmPlugin
 version = '3.5.6'
 nbm {
-  moduleName = 'my-test-project'
+  moduleName = 'com.foo.acme'
 }
 """
         when: "Generate netbeans module manifest"
@@ -374,10 +374,10 @@ nbm {
         // so can't rely on the default value for that
         buildFile << \
 """
-apply plugin: org.gradle.plugins.nbm.NbmPlugin\n\
+apply plugin: org.gradle.plugins.nbm.NbmPlugin
 version = '3.5.6'
 nbm {
-  moduleName = 'my-test-project'\n\
+  moduleName = 'com.foo.acme'
   implementationVersion = version
 }
 """
@@ -412,10 +412,10 @@ nbm {
         // so can't rely on the default value for that
         buildFile << \
 """
-apply plugin: org.gradle.plugins.nbm.NbmPlugin\n\
+apply plugin: org.gradle.plugins.nbm.NbmPlugin
 version = '3.5.6'
 nbm {
-  moduleName = 'my-test-project'\n\
+  moduleName = 'com.foo.acme'
 }
 """
         when: "Generate netbeans module manifest"
@@ -429,10 +429,10 @@ nbm {
         Thread.sleep(1000) // Ensure build date change (timestamp resolution)
         buildFile << \
 """
-apply plugin: org.gradle.plugins.nbm.NbmPlugin\n\
+apply plugin: org.gradle.plugins.nbm.NbmPlugin
 version = '3.5.7'
 nbm {
-  moduleName = 'my-test-project'\n\
+  moduleName = 'com.foo.acme/1'
 }
 """
         println "Run #2"
@@ -456,10 +456,10 @@ nbm {
         // so can't rely on the default value for that
         buildFile << \
 """
-apply plugin: org.gradle.plugins.nbm.NbmPlugin\n\
+apply plugin: org.gradle.plugins.nbm.NbmPlugin
 version = '3.5.6'
 nbm {
-  moduleName = 'my-test-project'\n\
+  moduleName = 'com.foo.acme'
   implementationVersion = version
 }
 """
@@ -474,10 +474,10 @@ nbm {
         Thread.sleep(1000) // Ensure build date change (timestamp resolution)
         buildFile << \
 """
-apply plugin: org.gradle.plugins.nbm.NbmPlugin\n\
+apply plugin: org.gradle.plugins.nbm.NbmPlugin
 version = '3.5.6'
 nbm {
-  moduleName = 'my-test-project'\n\
+  moduleName = 'com.foo.acme'
   implementationVersion = '3.5.6.1'
 }
 """
@@ -514,7 +514,7 @@ public class B { }
 
         assert manifest.get('Manifest-Version') == '1.0'
         assert manifest.get('OpenIDE-Module-Specification-Version') == '3.5.6'
-        assert manifest.get('OpenIDE-Module') == 'my-test-project'
+        assert manifest.get('OpenIDE-Module') == 'com.foo.acme'
         assert manifest.get('OpenIDE-Module-Requires')?.split(',')*.trim().contains('org.openide.modules.ModuleFormat1')
         assert manifest.get('Created-By') == 'Gradle NBM plugin'
         

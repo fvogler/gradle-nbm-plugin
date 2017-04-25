@@ -227,7 +227,7 @@ apply plugin: 'java'
 apply plugin: org.gradle.plugins.nbm.NbmPlugin
 
 nbm {
-  moduleName = 'com.foo.acme'\n\
+  moduleName = 'com.foo.acme'
   classpathExtFolder = 'acme'
 }
 dependencies {
@@ -353,7 +353,7 @@ apply plugin: 'java'
 apply plugin: org.gradle.plugins.nbm.NbmPlugin
 
 nbm {
-  moduleName = 'com.foo.acme'\n\
+  moduleName = 'com.foo.acme'
   autoload = 'true'
 }
 """
@@ -378,7 +378,7 @@ apply plugin: 'java'
 apply plugin: org.gradle.plugins.nbm.NbmPlugin
 
 nbm {
-  moduleName = 'com.foo.acme'\n\
+  moduleName = 'com.foo.acme'
   eager = 'true'
 }
 """

@@ -2,6 +2,7 @@ package org.gradle.plugins.nbm;
 
 import groovy.lang.Closure;
 import org.gradle.api.Project;
+import org.gradle.api.InvalidUserDataException;
 import org.gradle.api.artifacts.Configuration;
 
 import java.io.File;
@@ -160,12 +161,19 @@ public final class NbmPluginExtension {
 
     public String getModuleName() {
         if (moduleName == null) {
-            return project.getName().replace('-', '.');
+            setModuleName(project.getName().replace('-', '.'));
         }
         return moduleName;
     }
 
     public void setModuleName(String moduleName) {
+        // pattern copied from http://netbeans.org/ns/nb-module-project/3.xsd (code-name-base)
+        // and add optional major version to pattern
+        String pattern = "[a-zA-Z][a-zA-Z0-9_]*(\\.[a-zA-Z][a-zA-Z0-9_]*)*(/\\d+)?";
+        if (!moduleName.matches(pattern)) {
+            throw new InvalidUserDataException("Illegal module friend name - '" + moduleName + "' (must match '" + pattern + "'");
+        }
+
         this.moduleName = moduleName;
     }
 
