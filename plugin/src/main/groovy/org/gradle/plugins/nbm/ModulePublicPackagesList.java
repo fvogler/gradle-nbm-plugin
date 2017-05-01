@@ -3,18 +3,22 @@ package org.gradle.plugins.nbm;
 import org.gradle.api.tasks.SourceSet;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
+import org.gradle.api.Project;
 
 public final class ModulePublicPackagesList {
 
     private final List<PackageNameGenerator> packageNameGenerators;
+    private final Project project;
 
-    public ModulePublicPackagesList() {
+    public ModulePublicPackagesList(Project project) {
+        this.project = project;
         this.packageNameGenerators = new LinkedList<>();
     }
 
@@ -95,6 +99,18 @@ public final class ModulePublicPackagesList {
             entries.add(toStarImport(packageName));
         }
         return entries;
+    }
+
+    @Deprecated
+    public List<String> getPackageList() {
+        project.getLogger().error("'nbm' plugin: Use of 'friendPackages.getPackageListPattern()' is deprecated use 'publicPackages.getEntries()' instead!");
+        return resolvePackageNames();
+    }
+
+    @Deprecated
+    public List<String> getPackageListPattern() {
+        project.getLogger().error("'nbm' plugin: Use of 'friendPackages.getPackageListPattern()' is deprecated use 'publicPackages.getEntries()' instead!");
+        return new ArrayList<>(getEntries());
     }
 
     private static String toStarImport(String packageName) {

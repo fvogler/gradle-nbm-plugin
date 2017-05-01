@@ -57,8 +57,8 @@ public final class NbmPluginExtension {
         this.needsRestart = null;
         this.eager = false;
         this.autoload = false;
-        this.publicPackages = new ModulePublicPackagesList();
-        this.moduleFriends = new ModuleFriendsList();
+        this.publicPackages = new ModulePublicPackagesList(this.project);
+        this.moduleFriends = new ModuleFriendsList(this.project);
         this.keyStore = new NbmKeyStoreDef();
         this.requires = new LinkedList<>();
         this.classpathExtFolder = null;
@@ -73,8 +73,20 @@ public final class NbmPluginExtension {
         return buildDate;
     }
 
+    @Deprecated
+    public ModulePublicPackagesList getFriendPackages() {
+        project.getLogger().error("'nbm' plugin: Use of 'friendPackages' is deprecated use 'publicPackages' instead!");
+        return getPublicPackages();
+    }
+
     public ModulePublicPackagesList getPublicPackages() {
         return publicPackages;
+    }
+
+    @Deprecated
+    public void friendPackages(Closure<ModulePublicPackagesList> configBlock) {
+        project.getLogger().error("'nbm' plugin: Use of 'friendPackages' is deprecated use 'publicPackages' instead!");
+        publicPackages(configBlock);
     }
 
     public void publicPackages(Closure<ModulePublicPackagesList> configBlock) {

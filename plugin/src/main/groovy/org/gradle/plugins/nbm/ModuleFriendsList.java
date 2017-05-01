@@ -6,12 +6,15 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import org.gradle.api.InvalidUserDataException;
+import org.gradle.api.Project;
 
 public final class ModuleFriendsList {
 
     private final Set<String> moduleFriends;
+    private final Project project;
 
-    public ModuleFriendsList() {
+    public ModuleFriendsList(Project project) {
+        this.project = project;
         this.moduleFriends = new HashSet<>();
     }
 
